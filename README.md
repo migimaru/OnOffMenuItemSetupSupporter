@@ -1,10 +1,28 @@
 # On/Off Menu Item Setup Supporter for lilycalInventory
 
-VRChatアバター向けに、lilycalInventoryの `ItemToggler` を使用した
-ON/OFFメニュー作成を補助するUnity Editor拡張です。
+VRChatアバター向けに、lilycalInventoryの `ItemToggler` を使用したON/OFFメニュー作成を補助するUnity Editor拡張です。
 
-衣装やアクセサリーに含まれるMeshを一覧表示し、
-MenuFolderごとにItemTogglerをまとめて生成できます。
+衣装やアクセサリーに含まれるMeshを一覧表示し、MenuFolderごとにItemTogglerをまとめて生成できます。
+
+## インストール
+
+VCC（VRChat Creator Companion）からの導入を推奨します。
+
+### VPM Repository
+
+Repository URL:
+
+`https://nuko615.github.io/vpm/index.json`
+
+1. VCCを開く
+2. `Settings > Packages` を開く
+3. `Add Repository` を選択
+4. 上記Repository URLを入力して追加
+5. 対象プロジェクトの `Manage Project` を開く
+6. `On/Off Menu Item Setup Supporter for lilycalInventory` を追加
+
+VPM Repositoryページ:
+https://nuko615.github.io/vpm/
 
 ## 主な機能
 
@@ -34,6 +52,33 @@ MenuFolderごとにItemTogglerをまとめて生成できます。
 
 本ツールはlilycalInventoryを使用してItemTogglerを生成します。
 lilycalInventoryは本パッケージには同梱されません。
+
+`package.json` では以下の範囲を依存関係として指定しています。
+
+- lilycalInventory: `>=1.3.1 <2.0.0`
+- VRChat Avatars SDK: `>=3.8.2 <3.11.0`
+
+## 動作確認済み環境
+
+Unity 2022.3.6f1で確認しています。
+
+lilycalInventoryについては、VRChat Avatars SDK 3.8.2との組み合わせで以下を確認しています。
+
+- 1.3.1
+- 1.4.0
+- 1.4.1
+- 1.4.5
+- 1.5.0
+- 1.5.2
+
+VRChat Avatars SDKについては、lilycalInventory 1.5.2との組み合わせで以下を確認しています。
+
+- 3.8.2
+- 3.9.0
+- 3.10.0
+- 3.10.5
+
+上記以外の依存範囲内バージョンについては、個別の動作確認を行っていない場合があります。
 
 ## 使い方
 
