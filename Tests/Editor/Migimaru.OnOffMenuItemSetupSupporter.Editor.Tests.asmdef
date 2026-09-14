@@ -1,0 +1,15 @@
+{
+  "name": "Migimaru.OnOffMenuItemSetupSupporter.Editor.Tests",
+  "rootNamespace": "Migimaru.OnOffMenuItemSetupSupporter.Editor.Tests",
+  "references": [
+    "Migimaru.OnOffMenuItemSetupSupporter.Editor",
+    "Migimaru.OnOffMenuItemSetupSupporter.Runtime",
+    "jp.lilxyzw.lilycalinventory.runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

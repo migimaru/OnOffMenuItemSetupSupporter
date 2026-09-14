@@ -1,0 +1,12 @@
+{
+  "name": "Migimaru.OnOffMenuItemSetupSupporter.Editor",
+  "rootNamespace": "Migimaru.OnOffMenuItemSetupSupporter.Editor",
+  "references": [
+    "Migimaru.OnOffMenuItemSetupSupporter.Runtime",
+    "jp.lilxyzw.lilycalinventory.runtime",
+    "VRC.SDK3A"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}

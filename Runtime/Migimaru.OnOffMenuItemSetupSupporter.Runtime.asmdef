@@ -1,0 +1,7 @@
+{
+  "name": "Migimaru.OnOffMenuItemSetupSupporter.Runtime",
+  "rootNamespace": "Migimaru.OnOffMenuItemSetupSupporter",
+  "references": [
+    "VRC.SDKBase"
+  ]
+}
