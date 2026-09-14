@@ -2,6 +2,19 @@
 
 このプロジェクトの変更履歴を記録します。
 
+## [0.1.1] - 2026-09-14
+
+### Changed
+
+- GitHubユーザー名変更に伴いRepository / Release / ChangelogのURLを更新
+- VPM Repository URLを新しいGitHubユーザー名に合わせて更新
+- `package.json` のバージョンを0.1.1へ更新
+- `author.url` を追加
+
+### Notes
+
+- ツール本体の機能変更はありません
+
 ## [0.1.0] - 2026-09
 
 ### Added
