@@ -1,0 +1,104 @@
+name: Build Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Read package information
+        shell: bash
+        run: |
+          PACKAGE_NAME="$(jq -r '.name' package.json)"
+          VERSION="$(jq -r '.version' package.json)"
+
+          if [ -z "$PACKAGE_NAME" ] || [ "$PACKAGE_NAME" = "null" ]; then
+            echo "package.json の name が取得できません。"
+            exit 1
+          fi
+
+          if [ -z "$VERSION" ] || [ "$VERSION" = "null" ]; then
+            echo "package.json の version が取得できません。"
+            exit 1
+          fi
+
+          echo "PACKAGE_NAME=$PACKAGE_NAME" >> "$GITHUB_ENV"
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "ZIP_FILE=${PACKAGE_NAME}-${VERSION}.zip" >> "$GITHUB_ENV"
+
+      - name: Validate release URL
+        shell: bash
+        run: |
+          EXPECTED_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${VERSION}/${ZIP_FILE}"
+          ACTUAL_URL="$(jq -r '.url' package.json)"
+
+          if [ "$ACTUAL_URL" != "$EXPECTED_URL" ]; then
+            echo "package.json の url がRelease予定URLと一致しません。"
+            echo "Expected: $EXPECTED_URL"
+            echo "Actual:   $ACTUAL_URL"
+            exit 1
+          fi
+
+      - name: Create VPM package staging directory
+        shell: bash
+        run: |
+          mkdir -p dist/package
+
+          cp -R Editor dist/package/
+          cp -R Runtime dist/package/
+
+          cp package.json dist/package/
+          cp README.md dist/package/
+          cp CHANGELOG.md dist/package/
+          cp LICENSE dist/package/
+
+      - name: Verify excluded files
+        shell: bash
+        run: |
+          if [ -e "dist/package/Tests" ] || [ -e "dist/package/Test" ]; then
+            echo "Tests がVPM配布物に含まれています。"
+            exit 1
+          fi
+
+          if find dist/package/Editor -type f -name '*Tests.cs' | grep -q .; then
+            echo "Editor フォルダ内にテストコードが残っています。"
+            exit 1
+          fi
+
+      - name: Create VPM zip
+        shell: bash
+        run: |
+          (
+            cd dist/package
+            zip -r "../../${ZIP_FILE}" .
+          )
+
+      - name: Create SHA256
+        shell: bash
+        run: |
+          sha256sum "${ZIP_FILE}" > "${ZIP_FILE}.sha256"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          if gh release view "${VERSION}" >/dev/null 2>&1; then
+            echo "Release ${VERSION} は既に存在します。package.json の version を更新してください。"
+            exit 1
+          fi
+
+          gh release create "${VERSION}" \
+            "${ZIP_FILE}" \
+            "${ZIP_FILE}.sha256" \
+            "package.json" \
+            --title "${VERSION}" \
+            --notes "On/Off Menu Item Setup Supporter ${VERSION}"
