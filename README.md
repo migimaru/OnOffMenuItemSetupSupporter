@@ -12,7 +12,7 @@ VCC（VRChat Creator Companion）からの導入を推奨します。
 
 Repository URL:
 
-`https://nuko615.github.io/vpm/index.json`
+`https://migimaru.github.io/vpm/index.json`
 
 1. VCCを開く
 2. `Settings > Packages` を開く
@@ -22,7 +22,7 @@ Repository URL:
 6. `On/Off Menu Item Setup Supporter for lilycalInventory` を追加
 
 VPM Repositoryページ:
-https://nuko615.github.io/vpm/
+https://migimaru.github.io/vpm/
 
 ## 主な機能
 
