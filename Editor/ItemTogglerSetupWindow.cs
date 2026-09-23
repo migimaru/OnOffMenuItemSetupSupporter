@@ -1997,12 +1997,6 @@ namespace Migimaru.OnOffMenuItemSetupSupporter.Editor
                 );
 
 
-            SerializedProperty menuNameProperty =
-                serializedObject.FindProperty(
-                    "menuName"
-                );
-
-
             if (menuNameProperty != null)
             {
                 menuNameProperty.stringValue =
@@ -2653,9 +2647,6 @@ namespace Migimaru.OnOffMenuItemSetupSupporter.Editor
                     "menuName"
                 );
 
-
-            menuNameProperty.stringValue =
-                meshObject.name;
 
 
             bool initiallyActive =
