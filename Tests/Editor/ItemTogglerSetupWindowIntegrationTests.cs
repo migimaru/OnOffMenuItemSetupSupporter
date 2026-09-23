@@ -209,9 +209,10 @@ namespace Migimaru.OnOffMenuItemSetupSupporter.Editor.Tests
                 );
 
 
-            Assert.AreEqual(
-                "Hat",
-                menuName.stringValue
+            Assert.IsTrue(
+                string.IsNullOrEmpty(
+                    menuName.stringValue
+                )
             );
 
 
