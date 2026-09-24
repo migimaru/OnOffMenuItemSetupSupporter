@@ -2,6 +2,21 @@
 
 このプロジェクトの変更履歴を記録します。
 
+## [0.2.0] - 2026-09-24
+
+### Added
+
+- 既存ItemTogglerを編集する機能を追加
+- `[編集] ONで非表示` / `[編集] OFFで非表示` を追加
+- 子MenuFolderを含めた編集に対応
+- 既存の複数Target ItemTogglerの維持・分割に対応
+- Active / EditorOnlyの編集に対応
+
+### Fixed
+
+- 自動生成したItemTogglerのmenuNameを固定しないよう修正
+- Hierarchy上でItemToggler名を変更した際、lilycalInventoryのメニュー名も追従するよう修正
+
 ## [0.1.1] - 2026-09-14
 
 ### Changed
