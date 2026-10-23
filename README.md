@@ -1,185 +1,126 @@
 # On/Off Menu Item Setup Supporter for lilycalInventory
 
-VRChatアバター向けに、lilycalInventoryの `ItemToggler` を使用したON/OFFメニュー作成を補助するUnity Editor拡張です。
-
-衣装やアクセサリーに含まれるMeshを一覧表示し、MenuFolderごとにItemTogglerをまとめて生成できます。
-
-## インストール
-
-VCC（VRChat Creator Companion）からの導入を推奨します。
-
-### VPM Repository
-
-Repository URL:
-
-`https://migimaru.github.io/vpm/index.json`
-
-1. VCCを開く
-2. `Settings > Packages` を開く
-3. `Add Repository` を選択
-4. 上記Repository URLを入力して追加
-5. 対象プロジェクトの `Manage Project` を開く
-6. `On/Off Menu Item Setup Supporter for lilycalInventory` を追加
-
-VPM Repositoryページ:
-https://migimaru.github.io/vpm/
-
-## 主な機能
-
-- `ONで非表示`
-- `OFFで非表示`
-- 複数の衣装Rootに対応
-- SkinnedMeshRendererを自動検出
-- MeshRenderer + MeshFilterを自動検出
-- Hierarchy上のInactive状態を初期状態として維持
-- EditorOnlyのMeshを登録対象から除外可能
-- EditorOnlyのMenuFolderを登録先から除外
-- 同一Meshの重複登録を防止
-- 子MenuFolderへの振り分け
-- 子MenuFolderをItemTogglerの上または下へ配置
-- 8項目制限に合わせたNextPage自動生成
-- 既存の自動NextPageの空き枠を再利用
-- 追加 / 上書き
-- Undo対応
-- 未使用MenuFolderの案内
-- Mesh名クリックによるHierarchy選択
+VRChatアバターのMeshを一覧から選び、lilycalInventoryのItemTogglerメニューを作成・編集するUnity Editor拡張です。
 
 ## 必要環境
 
 - Unity 2022.3
 - VRChat Avatars SDK
-- lilycalInventory
+- lilycalInventory（本パッケージには同梱しません）
 
-本ツールはlilycalInventoryを使用してItemTogglerを生成します。
-lilycalInventoryは本パッケージには同梱されません。
+## インストール・更新
 
-`package.json` では以下の範囲を依存関係として指定しています。
+[VPMリポジトリ](https://migimaru.github.io/vpm/)をVCCに追加し、プロジェクトのパッケージ管理から本ツールを追加・更新してください。
+パッケージは[GitHub Releases](https://github.com/migimaru/OnOffMenuItemSetupSupporter/releases)でも配布しています。
 
-- lilycalInventory: `>=1.3.1 <2.0.0`
-- VRChat Avatars SDK: `>=3.8.2 <3.11.0`
+## 起動と衣装の読み込み
 
-## 動作確認済み環境
+Avatar Rootを右クリックし、`On／Off Menu Item Setup Supporter > Create ItemOffMenu` でメニューの起点を作成します。
+同名の起点がある場合は、空いている番号を付けます。
 
-Unity 2022.3.6f1で確認しています。
+MenuFolderを右クリックして、次のどちらかで開きます。
 
-lilycalInventoryについては、VRChat Avatars SDK 3.8.2との組み合わせで以下を確認しています。
+| 起動方法 | 用途 |
+|---|---|
+| `ONで非表示` / `OFFで非表示` | 空の入力から設定し、対象範囲のメニューを上書きする |
+| `[編集] ONで非表示` / `[編集] OFFで非表示` | 既存の登録内容を読み込み、編集する |
 
-- 1.3.1
-- 1.4.0
-- 1.4.1
-- 1.4.5
-- 1.5.0
-- 1.5.2
+どちらも同じ画面・設定項目を使います。Hierarchy上の衣装をドラッグ＆ドロップするか、`+`で追加した欄に指定してください。
+編集画面でも衣装を追加でき、追加時に既存の編集内容をリセットしません。
+設定先・動作・設定項目群の下に、暗い背景のドロップ欄と、その右側の`+`を配置します。
+新しく読み込んだMeshは「登録しない」が選択された状態で追加します。編集時の既存登録はそのまま読み込みます。
 
-VRChat Avatars SDKについては、lilycalInventory 1.5.2との組み合わせで以下を確認しています。
+衣装内のSkinnedMeshRenderer、またはMeshRendererとMeshFilterを持つGameObjectを検出します。
+親子の衣装Rootが重なる場合も、同じMeshを重複表示しません。別の対象メニューに登録済みのMeshは、重複した新規登録の対象から外します。
 
-- 3.8.2
-- 3.9.0
-- 3.10.0
-- 3.10.5
+## 共通の操作
 
-上記以外の依存範囲内バージョンについては、個別の動作確認を行っていない場合があります。
+| 場所 | ボタン | 動作 |
+|---|---|---|
+| 左下 | 一つ前に戻す | 適用した状態へ戻る。連続して過去の適用を取り消せる |
+| 右下 | 変更リセット | Meshの登録先・表示・EditorOnlyを、読み込み時または直近の適用時点に戻す |
+| 右下 | 変更適用 | 変更を反映し、画面は開いたままにする |
+| 右下 | 完了 | 変更を適用し、成功したら閉じる |
+| 右下 | キャンセル | 未適用の変更をリセットして閉じる |
 
-## 使い方
+ウィンドウの×もキャンセルと同じ動作です。適用済みの変更はキャンセルでは戻しません。
+変更リセットでは衣装一覧の追加・削除・並べ替えを維持します。追加した衣装は残り、`−`で削除した衣装は復活しません。共通の設定項目群もリセット対象には含めません。
+通常モードで登録対象が0件の場合、リセットと適用は無効になります。完了・キャンセルは上書きせず閉じます。
 
-### 1. ItemOffMenuを作成
+## 通常モードの上書き
 
-VRChat Avatar Rootを右クリックし、
-`On／Off Menu Item Setup Supporter > Create ItemOffMenu`
-を実行します。
+入力にある内容で対象範囲のメニューを作り直します。
+既存がA・B・Cで、今回の登録対象がA・Bだけなら、適用後のメニューはA・Bになります。
+既存の一部を維持しながら変更したい場合は、編集モードを使ってください。
 
-`ItemOffMenu > Accessory` が生成されます。
+起点のMenuFolderと、手動で用意した子MenuFolderは保持します。登録対象が0件の子MenuFolderや、適用によって空になった子MenuFolderも残します。
+対象範囲内の不要になった空の自動NextPageは整理します。
+他のコンポーネントや子オブジェクトを持つGameObjectは削除せず、メニューのコンポーネントだけを変更・削除します。
+Prefabに由来するGameObjectも保持します。
 
-同名のItemOffMenuが存在する場合は、
-`ItemOffMenu2 > Accessory2` のように空いている番号が自動的に使用されます。
+## 子MenuFolderの対象範囲
 
-### 2. ItemTogglerを設定
+`子MenuFolderも編集対象に含める` は、通常・編集の両方で使います。通常起動では初期ON、編集起動では初期OFFです。
 
-lilycalInventoryのMenuFolderが設定されているGameObjectを右クリックし、
-`ONで非表示` または `OFFで非表示` を選択します。
+- OFF：起点のメニューだけを対象とし、手動の子MenuFolderとその中身を変更・削除しません。
+- ON：子MenuFolder内のメニューも対象に含めます。
 
-### 3. 衣装を登録
+本ツールが作成した自動NextPageは、同じメニューの続きとして扱います。
+子MenuFolderの上下配置は、子MenuFolderを対象に含めた場合に変更します。
 
-Hierarchy上の衣装やアクセサリーのRootをツールへドラッグ＆ドロップします。
-対象Root以下からMeshが自動的に検出されます。
+## 表示・登録の設定
 
-各Meshについて、表示状態、EditorOnly、登録先MenuFolder、登録しない、を設定できます。
+- Meshごとに表示状態、EditorOnly、登録先MenuFolder、登録しない、を指定できます。
+- 表示・EditorOnlyの変更はHierarchyにプレビューします。リセット・キャンセル・×で未適用分を戻します。
+- `EditorOnlyのMeshにはメニューを作成しない` は、Mesh自身か親のいずれかがEditorOnlyの場合に除外します。
+- EditorOnlyのMenuFolderは登録先に選べません。
+- `8項目以内に自動調整` でBack・子MenuFolder・ItemToggler・NextPageを考慮し、自動NextPageを作成します。
+- 子MenuFolderをItemTogglerの上または下に配置できます。
+- 他の機能を持つオブジェクトを編集する場合、位置や他のコンポーネントは保ち、メニューの登録先だけを変更します。
+- 既存の複数Target構成を維持するか、分割して編集するかを指定できます。重複登録やModular Avatar指定など、安全に再現できない構成は構造編集を制限します。
 
-## ONで非表示
+`ONで非表示` はONで非表示、`OFFで非表示` はOFFで非表示になる設定です。
+Hierarchy上の初期表示状態に合わせてToggleの初期値を設定します。
 
-ToggleがONになると対象を非表示にします。
+## 一つ前に戻す
 
-- OFF: 表示
-- ON: 非表示
+適用済みの履歴と、未適用の入力を区別します。
 
-対象がHierarchy上でInactiveの場合は、初期Toggle状態も自動的に反転されます。
+例：Aを適用 → Bを適用 → Cへ編集中の場合
 
-## OFFで非表示
+1. 最初の「一つ前に戻す」で、未適用のCを破棄してBの適用時点へ戻ります。
+2. もう一度押すと、Aの適用時点へ戻ります。
+3. 最初の適用も取り消すと、その画面で作業を始める前のメニューに戻ります。
 
-ToggleがOFFになると対象を非表示にします。
+削除したメニューや、削除したメニューへのプリセット参照も復元対象です。
+この画面の履歴でUnityの別の操作をまとめて巻き戻すことはありません。
+履歴はウィンドウを開いている間だけ保持し、閉じると破棄します。
+Unity標準のUndo/Redoを使った場合やスクリプトを再読み込みした場合も、画面の履歴を再開始します。
 
-- ON: 表示
-- OFF: 非表示
+## ウィンドウと列幅
 
-対象がHierarchy上でInactiveの場合は、初期Toggle状態も自動的に反転されます。
+Unityのタブとしてドッキングでき、取り外して独立ウィンドウにもできます。
+独立表示時の最小幅は350です。狭い場合は下部のボタンを2段に配置します。
 
-## 8項目以内に自動調整
+設定項目・ドロップ欄・列見出しを固定し、その下の衣装・Meshだけを縦スクロールします。横スクロールでは見出しも各列に追従します。
 
-VRChat Expression Menuの項目数を考慮し、
-Back、子MenuFolder、ItemToggler、NextPageの合計が8項目以内になるよう、
-自動的にNextPageを生成します。
+列見出し右端の縦線を左右にドラッグすると幅を変更できます。MenuFolder列も含め、幅は列ごとに独立しています。
+Mesh列は名前の実際の描画幅を基準に幅を決め、手で調整した後はその幅を優先します。並べ替え後も維持します。
+列を縮めたりウィンドウを広げたりしても、余った幅を他の列へ配分しません。列幅の合計がウィンドウより短い場合は、右側に余白を残します。
+長いMesh名は列を広げるか、マウスを重ねて全文を確認できます。
+一覧がウィンドウより広い場合は、横スクロールで確認してください。
 
-自動生成されたNextPageには識別用Componentが追加されます。
-このComponentはEditor上での識別にのみ使用され、アバターの動作には影響しません。
+## 衣装とMeshの並べ替え
 
-## EditorOnly
+衣装名の左端のハンドルを上下にドラッグすると、その衣装のMeshをまとめて移動します。
+Mesh行のハンドルでは、同じ衣装の中だけを並べ替えます。別の衣装への移動は行いません。
+表示・EditorOnly・登録先は行と一緒に移動し、並べ替え専用のボタンやモード切り替えはありません。
+行の背景が青くなるのはハンドルを掴んでいる間だけです。通常のクリックでは選択色を残さず、ハンドルを離す・Escapeで中断する・画面からフォーカスが外れると通常の背景に戻ります。
 
-### Mesh
-
-`EditorOnlyにはメニューを作成しない` が有効な場合、
-EditorOnlyのMeshにはItemTogglerを生成しません。
-親GameObjectがEditorOnlyの場合も対象になります。
-
-### MenuFolder
-
-EditorOnlyになっているMenuFolderは一覧には表示されますが、
-`-` と表示され、登録先として選択できません。
-
-## 未使用MenuFolder
-
-使用されていないMenuFolderが存在すると、以下を表示します。
-
-未使用のMenuFolder: Accessory  
-使用しない場合はHierarchyから削除かEditorOnlyに変更してください。
-
-ツールが自動的に削除やEditorOnly化を行うことはありません。
-
-## 追加
-
-既存のItemTogglerを残したまま新しいItemTogglerを追加します。
-自動生成済みNextPageに空きがある場合は、その空きから使用します。
-登録対象が0件の場合は追加ボタンを押せません。
-
-## 上書き
-
-既存のItemTogglerと、本ツールが自動生成したNextPageを再生成します。
-手動で作成したMenuFolderやNextPageは削除しません。
-
-ItemTogglerと同じGameObjectに他のComponentや子GameObjectが存在する場合は、
-GameObject自体を削除せずItemToggler Componentのみ削除します。
-
-## Undo
-
-追加・上書き操作は、原則として1回のUndoで元に戻せるように実装されています。
-
-## テスト
-
-EditMode TestでItemToggler生成、ON/OFF初期値、Active / Inactive、
-NextPage生成、8項目制限、子MenuFolder順、追加、上書き、Undo、
-EditorOnly、Mesh重複防止を検証しています。
-
-テストコードはGitHubリポジトリには含まれますが、
-VPM配布パッケージには含めません。
+並べ替えは下書きとして保持し、「変更適用」または「完了」で実際のメニュー順に反映します。
+元の衣装・MeshのHierarchy順は変えません。適用した順番は「一つ前に戻す」の復元対象です。
+複数Targetを1つのItemTogglerにまとめた構成は1つのメニュー項目のまま維持します。個別のメニューにしたい場合は「既存の複数Target構成を維持」をOFFにします。
+他の機能・Prefab・複数衣装にまたがる構成を持つ項目は、配置を保つためハンドルを無効にし、それをまたぐ移動も制限します。
 
 ## ライセンス
 
